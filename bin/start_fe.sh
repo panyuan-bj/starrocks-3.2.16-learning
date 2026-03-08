@@ -129,16 +129,13 @@ fi
 # NOTE: try not adding new JAVA_OPTS_FOR_JDK_## for a new JDK version.
 #
 final_java_opt=
-case $JAVA_VERSION in
-  11)
-    # take JAVA_OPTS_FOR_JDK_11 or JAVA_OPTS_FOR_JDK_9 if the former is empty
+if [[ "$JAVA_VERSION" -ge 11 ]]; then
+    # For JDK 11+, take JAVA_OPTS_FOR_JDK_11 or JAVA_OPTS_FOR_JDK_9 if the former is empty
     final_java_opt=${JAVA_OPTS_FOR_JDK_11:-$JAVA_OPTS_FOR_JDK_9}
     final_java_opt=${final_java_opt:-$JAVA_OPTS}
-    ;;
-  *)
+else
     final_java_opt=$JAVA_OPTS
-    ;;
-esac
+fi
 
 if [ -z "$final_java_opt" ] ; then
     # lookup fails, provide a fixed opts with best guess that may or may not work
